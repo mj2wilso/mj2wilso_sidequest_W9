@@ -46,6 +46,13 @@ let level = [
   "dddddddddddddd", // deep ground
 ];
 
+let debugMode = false;
+let moonGravity = false;
+let showHitboxes = false;
+
+const NORMAL_GRAVITY = 10;
+const MOON_GRAVITY = 2;
+
 // --- LEVEL CONSTANTS ---
 // camera view size
 const VIEWW = 320,
@@ -154,6 +161,27 @@ function startMusicIfNeeded() {
 
 function keyPressed() {
   startMusicIfNeeded();
+
+  // Toggle debug screen
+  if (key === "`") {
+    debugMode = !debugMode;
+  }
+
+  if (debugMode) {
+    // Toggle moon gravity
+    if (key === "m" || key === "M") {
+      moonGravity = !moonGravity;
+      world.gravity.y = moonGravity ? MOON_GRAVITY : NORMAL_GRAVITY;
+    }
+
+    // Toggle hitbox visibility
+    if (key === "h" || key === "H") {
+      showHitboxes = !showHitboxes;
+
+      player.debug = showHitboxes;
+      sensor.visible = showHitboxes;
+    }
+  }
 }
 
 function mousePressed() {
@@ -221,4 +249,30 @@ function draw() {
 
   // --- KEEP IN VIEW ---
   player.pos.x = constrain(player.pos.x, FRAME_W / 2, VIEWW - FRAME_W / 2);
+
+  // --- DEBUG OVERLAY ---
+  if (debugMode) {
+    camera.off();
+
+    fill(0, 150);
+    noStroke();
+    rect(10, 10, 180, 90);
+
+    fill(255);
+    textSize(10);
+    text("DEBUG MODE", 20, 25);
+
+    text("` : Toggle Debug", 20, 40);
+    text("M : Moon Gravity", 20, 55);
+    text("H : Hitboxes", 20, 70);
+
+    text("Gravity: " + (moonGravity ? "MOON" : "NORMAL"), 20, 85);
+
+    camera.on();
+  }
+  // --- DEBUG INSTRUCTION TEXT ---
+  fill(255);
+  textSize(10);
+  textAlign(RIGHT);
+  text("Press '~' for debug screen", VIEWW - 10, VIEWH - 10);
 }
