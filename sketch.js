@@ -271,8 +271,18 @@ function draw() {
     camera.on();
   }
   // --- DEBUG INSTRUCTION TEXT ---
-  fill(255);
-  textSize(10);
-  textAlign(RIGHT);
-  text("Press '~' for debug screen", VIEWW - 10, VIEWH - 10);
+  if (!debugMode) {
+    camera.off();
+
+    push();
+    resetMatrix();
+    textSize(8);
+    fill(0);
+
+    textAlign(LEFT, TOP);
+    text("Press '~' for debug screen", 10, 10);
+    pop();
+
+    camera.on();
+  }
 }
