@@ -250,6 +250,11 @@ function draw() {
   // --- KEEP IN VIEW ---
   player.pos.x = constrain(player.pos.x, FRAME_W / 2, VIEWW - FRAME_W / 2);
 
+  if (player.pos.y < FRAME_H / 2) {
+    player.pos.y = FRAME_H / 2;
+    player.vel.y = 0; // stop upward drift
+  }
+
   // --- DEBUG OVERLAY ---
   if (debugMode) {
     camera.off();
